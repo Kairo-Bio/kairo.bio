@@ -5,7 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kairo Bio</title>
 
-  <!-- Inter font -->
+  <!-- SEO -->
+  <meta name="description" content="Modeling immunity to make health predictable. The infrastructure layer for precision immunology.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Kairo Bio">
+  <meta property="og:description" content="Modeling immunity to make health predictable.">
+  <meta property="og:type" content="website">
+
+  <!-- Inter font (optimized loading) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
@@ -13,28 +23,87 @@
       --kairo-teal: #058082;
       --kairo-black: #0A0A0A;
       --kairo-gray: #555555;
+      --bg-light: #e6f1f1;
       --bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
+      font-family: 'Inter', sans-serif;
       color: var(--kairo-black);
+      height: 100vh;
+      overflow: hidden;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      padding: 24px;
+
+      background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg) 65%);
     }
 
+    /* ===== BACKGROUND FIELD ===== */
+
+    .orbital {
+      position: absolute;
+      width: 1400px;
+      height: 1400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(5,128,130,0.05), transparent 70%);
+      filter: blur(100px);
+      animation: rotateSlow 80s linear infinite;
+      transition: transform 0.2s ease-out;
+    }
+
+    .orbital:nth-child(1) {
+      top: -400px;
+      left: -300px;
+    }
+
+    .orbital:nth-child(2) {
+      bottom: -400px;
+      right: -300px;
+      animation-direction: reverse;
+    }
+
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== CONTENT ===== */
+
     .container {
+      position: relative;
       max-width: 720px;
+      z-index: 2;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .logo {
-      width: 220px;
+      width: 240px;
       margin-bottom: 48px;
+      animation: logoDrift 14s ease-in-out infinite;
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    @keyframes logoDrift {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(0.5deg); }
     }
 
     h1 {
@@ -72,25 +141,31 @@
     a {
       color: var(--kairo-teal);
       text-decoration: none;
+      transition: opacity 0.2s ease;
     }
+
+    a:hover {
+      opacity: 0.7;
+    }
+
+    /* ===== MOBILE ===== */
 
     @media (max-width: 600px) {
-      h1 {
-        font-size: 34px;
-      }
-
-      h2 {
-        font-size: 18px;
-      }
-
-      .logo {
-        width: 180px;
-      }
+      h1 { font-size: 34px; }
+      h2 { font-size: 18px; }
+      .logo { width: 180px; }
     }
+
   </style>
 </head>
 
 <body>
+
+  <!-- Background -->
+  <div class="orbital"></div>
+  <div class="orbital"></div>
+
+  <!-- Content -->
   <div class="container">
 
     <img src="Logo_kairobio.png" alt="Kairo Bio Logo" class="logo"/>
@@ -111,5 +186,18 @@
     </div>
 
   </div>
+
+  <!-- Subtle parallax -->
+  <script>
+    document.addEventListener("mousemove", (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+      document.querySelectorAll(".orbital").forEach((el, i) => {
+        el.style.transform = `translate(${x * (i+1)}px, ${y * (i+1)}px)`;
+      });
+    });
+  </script>
+
 </body>
 </html>
